@@ -2,9 +2,9 @@ from AnalysisAlgorithmsConfig.ConfigText import TextConfig
 
 config = TextConfig()
 
-# Switch on systematics
 config.addBlock('CommonServices')
-config.setOptions(runSystematics=True)
+# Only run systematics if sys_error is not NOSYS
+config.setOptions(runSystematics={{ 'False' if sys_error == 'NOSYS' else 'True' }})
 config.setOptions(filterSystematics="^(?=.*{{sys_error}}|$).*")
 
 import logging
