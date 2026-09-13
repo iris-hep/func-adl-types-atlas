@@ -273,6 +273,12 @@ typename_info parse_typename(const string &type_name)
                     }
                     else
                     {
+                        if (is_collection(result) && result.namespace_list.empty()) {
+                            typename_info std_ns;
+                            std_ns.type_name = "std";
+                            std_ns.cpp_name = "std";
+                            result.namespace_list.insert(result.namespace_list.begin(), std_ns);
+                        }
                         result.cpp_name = typename_cpp_string(result);
                         typename_info nested_ns = result;
                         result = typename_info();
@@ -346,6 +352,13 @@ typename_info parse_typename(const string &type_name)
         name = "";
     }
     result.is_const = top_level_is_const;
+
+    if (is_collection(result) && result.namespace_list.empty()) {
+        typename_info std_ns;
+        std_ns.type_name = "std";
+        std_ns.cpp_name = "std";
+        result.namespace_list.insert(result.namespace_list.begin(), std_ns);
+    }
 
     // Get the full type name right, and properly parsed.
     result.cpp_name = typename_cpp_string(result);
@@ -543,6 +556,7 @@ std::string typename_cpp_string(const typename_info &ti)
 
     stream << ti.type_name;
 
+
     // And any template arguments
     first = true;
     for (auto &&t_arg : ti.template_arguments)
@@ -569,12 +583,6 @@ std::string typename_cpp_string(const typename_info &ti)
 
     return stream.str();
 }
-
-set<string> _known_templates({
-    "vector",
-    // "ElementLink",
-    // "DataVector",
-});
 
 // See if we can handle this type:
 // Raw types in the known list are ok
@@ -650,6 +658,7 @@ typename_info py_typename(const typename_info &t)
     if (t.type_name == "vector" || t.type_name == "DataVector") {
         typename_info result(t);
         result.type_name = "Iterable";
+        result.namespace_list.clear();
         result.template_arguments[0] = py_typename(t.template_arguments[0]);
         result.cpp_name = typename_cpp_string(result);
         return result;

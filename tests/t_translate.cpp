@@ -78,7 +78,7 @@ TEST(t_translate, truth_particle_methods) {
 TEST(t_translate, vector_float) {
     auto info = translate_class("vector<float>");
 
-    EXPECT_EQ(info.name, "vector<float>");
+    EXPECT_EQ(info.name, "std::vector<float>");
     EXPECT_EQ(info.methods.size(), 1);
     EXPECT_EQ(info.methods[0].name, "size");
     EXPECT_EQ(info.inherited_class_names.size(), 0);
