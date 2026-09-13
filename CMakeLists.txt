@@ -55,17 +55,33 @@ add_executable(generate_types bin/generate_types.cpp)
 target_link_libraries(generate_types ROOT::Core wraper_generators argparse stdc++fs)
 
 # Tests
+#
+# ROOT's own externals stack (LCG) ships its own bundled gtest headers,
+# and find_package(ROOT) puts that include directory ahead of our fetched
+# googletest's on the search path (via wraper_generators -> ROOT::Core).
+# That mismatches our test .cpp files (compiled against LCG's newer gtest
+# headers) against the gtest library we actually build and link (from our
+# pinned, older googletest commit), causing undefined references to
+# MakeAndRegisterTestInfo at link time. Force our fetched googletest's
+# include directory ahead of everything else so headers and library agree.
 enable_testing()
+set(func_adl_gtest_include_dir ${googletest_SOURCE_DIR}/googletest/include)
+
 add_executable(t_type_helpers tests/t_type_helpers.cpp)
-target_link_libraries(t_type_helpers wraper_generators GTest::gtest_main GTest::gtest)
+target_include_directories(t_type_helpers SYSTEM BEFORE PRIVATE ${func_adl_gtest_include_dir})
+target_link_libraries(t_type_helpers wraper_generators gtest_main gtest)
 add_executable(t_xaod_helpers tests/t_xaod_helpers.cpp)
-target_link_libraries(t_xaod_helpers wraper_generators GTest::gtest_main GTest::gtest)
+target_include_directories(t_xaod_helpers SYSTEM BEFORE PRIVATE ${func_adl_gtest_include_dir})
+target_link_libraries(t_xaod_helpers wraper_generators gtest_main gtest)
 add_executable(t_class_info tests/t_class_info.cpp)
-target_link_libraries(t_class_info wraper_generators GTest::gtest_main GTest::gtest)
+target_include_directories(t_class_info SYSTEM BEFORE PRIVATE ${func_adl_gtest_include_dir})
+target_link_libraries(t_class_info wraper_generators gtest_main gtest)
 add_executable(t_translate tests/t_translate.cpp)
-target_link_libraries(t_translate wraper_generators GTest::gtest_main GTest::gtest)
+target_include_directories(t_translate SYSTEM BEFORE PRIVATE ${func_adl_gtest_include_dir})
+target_link_libraries(t_translate wraper_generators gtest_main gtest)
 add_executable(t_metadata_file_finder tests/t_metadata_file_finder.cpp)
-target_link_libraries(t_metadata_file_finder wraper_generators GTest::gtest_main GTest::gtest stdc++fs)
+target_include_directories(t_metadata_file_finder SYSTEM BEFORE PRIVATE ${func_adl_gtest_include_dir})
+target_link_libraries(t_metadata_file_finder wraper_generators gtest_main gtest stdc++fs)
 
 include(GoogleTest)
 gtest_discover_tests(t_type_helpers)
