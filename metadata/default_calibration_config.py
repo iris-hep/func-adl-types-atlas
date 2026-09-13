@@ -52,5 +52,6 @@ def default_calibration_config() -> Dict[str, CalibrationEventConfig]:
             calibrate=True,
             uncalibrated_possible=True,
             correct_pileup=True,
+            fix_daod_truth_record=True,
         )
     }
