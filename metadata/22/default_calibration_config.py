@@ -56,6 +56,7 @@ def default_calibration_config() -> Dict[str, CalibrationEventConfig]:
             calibrate=True,
             uncalibrated_possible=True,
             correct_pileup=True,
+            fix_daod_truth_record=True,
         ),
         "PHYSLITE": CalibrationEventConfig(
             jet_collection="AnalysisJets",
@@ -78,5 +79,6 @@ def default_calibration_config() -> Dict[str, CalibrationEventConfig]:
             calibrate=False,
             uncalibrated_possible=False,
             correct_pileup=True,
+            fix_daod_truth_record=True,
         ),
     }

@@ -67,3 +67,6 @@ class CalibrationEventConfig:
 
     # ** True if we can return uncalibrated (PHYSLITE doesn't)
     uncalibrated_possible: bool
+
+    # ** Whether to fix up older-style DAOD truth records
+    fix_daod_truth_record: bool
