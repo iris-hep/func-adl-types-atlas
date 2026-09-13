@@ -4,7 +4,6 @@ config.addBlock ('Muons')
 config.setOptions (containerName=muon_container)
 config.setOptions (recalibratePhyslite=False)
 config.setOptions (decorateTruth=True)
-config.setOptions (writeTrackD0Z0=True)
 
 config.addBlock ('Muons.WorkingPoint')
 config.setOptions (containerName=muon_container)

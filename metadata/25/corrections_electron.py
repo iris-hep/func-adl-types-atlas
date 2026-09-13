@@ -8,7 +8,6 @@ config.addBlock ('Electrons.WorkingPoint')
 config.setOptions (containerName=electron_container_name)
 config.setOptions (selectionName='ElectronSelection')
 config.setOptions (forceFullSimConfig=True)
-config.setOptions (noEffSF=True)
 config.setOptions (identificationWP='{{calib.electron_working_point}}')
 config.setOptions (isolationWP='{{calib.electron_isolation}}')
 
