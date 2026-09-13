@@ -17,7 +17,7 @@ from AnaAlgorithm.AlgSequence import AlgSequence
 algSeq = AlgSequence()
 
 from AnalysisAlgorithmsConfig.ConfigAccumulator import ConfigAccumulator
-configAccumulator = ConfigAccumulator(algSeq, autoconfigFromFlags=autoconfigFromFlags)
+configAccumulator = ConfigAccumulator(algSeq=algSeq, autoconfigFromFlags=autoconfigFromFlags)
 configSeq.fullConfigure(configAccumulator)
 
 algSeq.addSelfToJob( job )
