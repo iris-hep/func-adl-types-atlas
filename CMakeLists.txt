@@ -22,6 +22,8 @@ macro(FetchContent_Package name url)
   FetchContent_MakeAvailable(${name})
 endmacro()
 
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+
 # Fetch our libraries
 FetchContent_Package(googletest https://github.com/google/googletest/archive/075810f7a20405ea09a93f68847d6e963212fa62.zip)
 FetchContent_Package(yaml-cpp https://github.com/jbeder/yaml-cpp/archive/refs/tags/0.8.0.zip)
