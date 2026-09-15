@@ -1,3 +1,5 @@
+import logging
+
 configSeq = config.configure()
 
 from Campaigns.Utils import Campaign

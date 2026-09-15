@@ -1,0 +1,106 @@
+# Default calibration configuration for R25 DAOD_PHYS datasets.
+#
+# Everything here EXCEPT the `_servicex_meta` key is a plain
+# `AnalysisAlgorithmsConfig.ConfigText.TextConfig` YAML document - i.e. exactly
+# what `TextConfig(config=this_dict).configure()` expects: top-level keys are
+# real ATLAS config block names (`Jets`, `Electrons`, ...), a block that has
+# sub-blocks (e.g. `Electrons.WorkingPoint` in the Python `addBlock()` API)
+# nests them as plain dict keys (`Electrons: {WorkingPoint: {...}}`), and a
+# block invoked more than once (like `Thinning`, used once per object type)
+# is a YAML list of option-dicts instead of a single dict.
+#
+# `_servicex_meta` is stripped out by `calibration_support.py` before the rest
+# is handed to `TextConfig` - it is NOT part of the ATLAS format, just the
+# small bit of extra bookkeeping our front end needs:
+#   * `calibrate_by_default` / `uncalibrated_possible`: whether a bare
+#     `.Jets()`/`.Electrons()`/etc. call (no explicit `calibrate=`) should run
+#     these blocks, and whether `calibrate=False` is even allowed.
+#   * `raw_collection_names`: the un-calibrated xAOD container backing each
+#     collection type - what `calibrate=False` returns, and what the object is
+#     read from before calibration.
+#
+# A user may point `calib_tools.set_calibration_yaml_path(...)` at their own
+# copy of a file shaped like this one to run whatever calibration they want -
+# anything outside `_servicex_meta` is handed to `TextConfig` unmodified
+# (after the `{{ sys_error }}` placeholders below are rendered), so any
+# block/option the real ATLAS release supports can be used, not just the ones
+# enumerated here.
+
+_servicex_meta:
+  calibrate_by_default: true
+  uncalibrated_possible: true
+  raw_collection_names:
+    jet_collection: AntiKt4EMPFlowJets
+    electron_collection: Electrons
+    muon_collection: Muons
+    photon_collection: Photons
+    tau_collection: TauJets
+
+CommonServices:
+  runSystematics: {{ 'false' if sys_error == 'NOSYS' else 'true' }}
+  filterSystematics: "^(?=.*{{ sys_error }}|$).*"
+  fixDAODTruthRecord: true
+
+PileupReweighting: {}
+
+Jets:
+  containerName: AntiKt4EMPFlowJets_Calib
+  jetCollection: AntiKt4EMPFlowJets
+  runJvtUpdate: true
+  runNNJvtUpdate: true
+  recalibratePhyslite: false
+  runGhostMuonAssociation: true
+
+Electrons:
+  containerName: Electrons_MediumLH_NonIso_Calib
+  recalibratePhyslite: false
+  WorkingPoint:
+    containerName: Electrons_MediumLH_NonIso_Calib
+    selectionName: ElectronSelection
+    forceFullSimConfig: true
+    identificationWP: MediumLH
+    isolationWP: NonIso
+
+Muons:
+  containerName: Muons_Medium_NonIso_Calib
+  recalibratePhyslite: false
+  decorateTruth: true
+  WorkingPoint:
+    containerName: Muons_Medium_NonIso_Calib
+    selectionName: MuonSelection
+    quality: Medium
+    isolation: NonIso
+
+Photons:
+  containerName: Photons_Tight_FixedCutTight_Calib
+  recomputeIsEM: false
+  recalibratePhyslite: false
+  decorateTruth: true
+  WorkingPoint:
+    containerName: Photons_Tight_FixedCutTight_Calib
+    selectionName: PhotonSelection
+    qualityWP: Tight
+    isolationWP: FixedCutTight
+    recomputeIsEM: false
+
+TauJets:
+  containerName: TauJets_Tight_Calib
+  decorateTruth: true
+  WorkingPoint:
+    containerName: TauJets_Tight_Calib
+    selectionName: TauSelection
+    quality: Tight
+
+Thinning:
+  - containerName: Electrons_MediumLH_NonIso_Calib
+    selectionName: ElectronSelection
+    outputName: OutElectrons
+  - containerName: Muons_Medium_NonIso_Calib
+    selectionName: MuonSelection
+    outputName: OutMuons
+  - containerName: Photons_Tight_FixedCutTight_Calib
+    selectionName: PhotonSelection
+    outputName: OutPhotons
+  - containerName: TauJets_Tight_Calib
+    selectionName: TauSelection
+    outputName: OutTauJets

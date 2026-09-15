@@ -758,7 +758,7 @@ int main(int argc, char**argv) {
     // Do the helper files
     string atlas_release (getenv("AtlasVersion"));
     metadata_file_finder m_finder (atlas_release);
-    emit_helper_files(out, m_finder);
+    emit_helper_files(out, m_finder, parse_release(atlas_release)[0]);
 
     // Dump some parameters about the running.
     out << YAML::Key << "config";
