@@ -35,6 +35,7 @@ _servicex_meta:
     muon_collection: Muons
     photon_collection: Photons
     tau_collection: TauJets
+    met_collection: MissingET
 
 CommonServices:
   runSystematics: {{ 'false' if sys_error == 'NOSYS' else 'true' }}
@@ -90,6 +91,23 @@ TauJets:
     containerName: TauJets_Tight_Calib
     selectionName: TauSelection
     quality: Tight
+
+MissingET:
+  containerName: MissingET_Calib
+  jets: AntiKt4EMPFlowJets_Calib
+  electrons: Electrons_MediumLH_NonIso_Calib.ElectronSelection
+  photons: Photons_Tight_FixedCutTight_Calib.PhotonSelection
+  muons: Muons_Medium_NonIso_Calib.MuonSelection
+  taus: TauJets_Tight_Calib.TauSelection
+
+OverlapRemoval:
+  inputLabel: preselectOR
+  outputLabel: passesOR
+  jets: AntiKt4EMPFlowJets_Calib
+  electrons: Electrons_MediumLH_NonIso_Calib.ElectronSelection
+  photons: Photons_Tight_FixedCutTight_Calib.PhotonSelection
+  muons: Muons_Medium_NonIso_Calib.MuonSelection
+  taus: TauJets_Tight_Calib.TauSelection
 
 Thinning:
   - containerName: Electrons_MediumLH_NonIso_Calib

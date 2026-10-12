@@ -21,6 +21,7 @@ _servicex_meta:
     muon_collection: AnalysisMuons
     photon_collection: AnalysisPhotons
     tau_collection: AnalysisTauJets
+    met_collection: MET_Core_AnalysisMET
 
 CommonServices:
   runSystematics: {{ 'false' if sys_error == 'NOSYS' else 'true' }}
@@ -77,6 +78,23 @@ TauJets:
     selectionName: TauSelection
     quality: Tight
 
+MissingET:
+  containerName: AnalysisMET_Calib
+  jets: AnalysisJets_Calib
+  electrons: AnalysisElectrons_MediumLH_NonIso_Calib.ElectronSelection
+  photons: AnalysisPhotons_Tight_FixedCutTight_Calib.PhotonSelection
+  muons: AnalysisMuons_Medium_NonIso_Calib.MuonSelection
+  taus: AnalysisTauJets_Tight_Calib.TauSelection
+
+OverlapRemoval:
+  inputLabel: preselectOR
+  outputLabel: passesOR
+  jets: AnalysisJets_Calib
+  electrons: AnalysisElectrons_MediumLH_NonIso_Calib.ElectronSelection
+  photons: AnalysisPhotons_Tight_FixedCutTight_Calib.PhotonSelection
+  muons: AnalysisMuons_Medium_NonIso_Calib.MuonSelection
+  taus: AnalysisTauJets_Tight_Calib.TauSelection
+
 Thinning:
   - containerName: AnalysisElectrons_MediumLH_NonIso_Calib
     selectionName: ElectronSelection
@@ -90,5 +108,3 @@ Thinning:
   - containerName: AnalysisTauJets_Tight_Calib
     selectionName: TauSelection
     outputName: OutTauJets
-
-# TODO: MET and overlap-removal blocks are not yet implemented for R25 in the
