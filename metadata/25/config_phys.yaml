@@ -40,32 +40,23 @@ _servicex_meta:
 CommonServices:
   runSystematics: {{ 'false' if sys_error == 'NOSYS' else 'true' }}
   filterSystematics: "^(?=.*{{ sys_error }}|$).*"
-  fixDAODTruthRecord: true
 
 PileupReweighting: {}
 
 Jets:
   containerName: AntiKt4EMPFlowJets_Calib
   jetCollection: AntiKt4EMPFlowJets
-  runJvtUpdate: true
-  runNNJvtUpdate: true
-  recalibratePhyslite: false
-  runGhostMuonAssociation: true
 
 Electrons:
   containerName: Electrons_MediumLH_NonIso_Calib
-  recalibratePhyslite: false
   WorkingPoint:
     containerName: Electrons_MediumLH_NonIso_Calib
     selectionName: ElectronSelection
-    forceFullSimConfig: true
     identificationWP: MediumLH
     isolationWP: NonIso
 
 Muons:
   containerName: Muons_Medium_NonIso_Calib
-  recalibratePhyslite: false
-  decorateTruth: true
   WorkingPoint:
     containerName: Muons_Medium_NonIso_Calib
     selectionName: MuonSelection
@@ -74,19 +65,14 @@ Muons:
 
 Photons:
   containerName: Photons_Tight_FixedCutTight_Calib
-  recomputeIsEM: false
-  recalibratePhyslite: false
-  decorateTruth: true
   WorkingPoint:
     containerName: Photons_Tight_FixedCutTight_Calib
     selectionName: PhotonSelection
     qualityWP: Tight
     isolationWP: FixedCutTight
-    recomputeIsEM: false
 
 TauJets:
   containerName: TauJets_Tight_Calib
-  decorateTruth: true
   WorkingPoint:
     containerName: TauJets_Tight_Calib
     selectionName: TauSelection

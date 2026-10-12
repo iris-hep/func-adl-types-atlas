@@ -3,8 +3,7 @@
 # See config_phys.yaml for a full description of this file's format
 # (everything except `_servicex_meta` is handed to `TextConfig` unmodified).
 # The only meaningful differences from the PHYS default are: input collection
-# names (the "Analysis*" containers PHYSLITE ships), `runGhostMuonAssociation:
-# false` (jets are already calibrated in PHYSLITE), and
+# names (the "Analysis*" containers PHYSLITE ships), and
 # `calibrate_by_default: false` / `uncalibrated_possible: false` - by default
 # a bare `.Jets()`/`.Electrons()`/etc. call on a PHYSLITE dataset returns the
 # raw PHYSLITE container unmodified, and a user cannot ask for "uncalibrated"
@@ -26,32 +25,23 @@ _servicex_meta:
 CommonServices:
   runSystematics: {{ 'false' if sys_error == 'NOSYS' else 'true' }}
   filterSystematics: "^(?=.*{{ sys_error }}|$).*"
-  fixDAODTruthRecord: true
 
 PileupReweighting: {}
 
 Jets:
   containerName: AnalysisJets_Calib
   jetCollection: AnalysisJets
-  runJvtUpdate: true
-  runNNJvtUpdate: true
-  recalibratePhyslite: false
-  runGhostMuonAssociation: false
 
 Electrons:
   containerName: AnalysisElectrons_MediumLH_NonIso_Calib
-  recalibratePhyslite: false
   WorkingPoint:
     containerName: AnalysisElectrons_MediumLH_NonIso_Calib
     selectionName: ElectronSelection
-    forceFullSimConfig: true
     identificationWP: MediumLH
     isolationWP: NonIso
 
 Muons:
   containerName: AnalysisMuons_Medium_NonIso_Calib
-  recalibratePhyslite: false
-  decorateTruth: true
   WorkingPoint:
     containerName: AnalysisMuons_Medium_NonIso_Calib
     selectionName: MuonSelection
@@ -60,19 +50,14 @@ Muons:
 
 Photons:
   containerName: AnalysisPhotons_Tight_FixedCutTight_Calib
-  recomputeIsEM: false
-  recalibratePhyslite: false
-  decorateTruth: true
   WorkingPoint:
     containerName: AnalysisPhotons_Tight_FixedCutTight_Calib
     selectionName: PhotonSelection
     qualityWP: Tight
     isolationWP: FixedCutTight
-    recomputeIsEM: false
 
 TauJets:
   containerName: AnalysisTauJets_Tight_Calib
-  decorateTruth: true
   WorkingPoint:
     containerName: AnalysisTauJets_Tight_Calib
     selectionName: TauSelection
